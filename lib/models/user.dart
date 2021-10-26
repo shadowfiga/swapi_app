@@ -3,7 +3,8 @@ class User {
     required this.email,
     required this.password,
   });
+  User.createEmpty({this.email, this.password});
 
-  final String email;
-  final String password;
+  String? email;
+  String? password;
 }
