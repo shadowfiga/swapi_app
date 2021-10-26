@@ -21,4 +21,9 @@ class AuthService {
     final u = localStorage.getItem('user');
     return User.fromJson(u);
   }
+
+  static Future<void> logout() async {
+    await localStorage.ready;
+    localStorage.clear();
+  }
 }

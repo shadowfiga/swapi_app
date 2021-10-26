@@ -9,6 +9,7 @@ class Navbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final authProvider = Provider.of<Auth>(context, listen: false);
     return Container(
       decoration: BoxDecoration(
         color: theme.backgroundColor,
@@ -26,7 +27,7 @@ class Navbar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "SWAPI",
+            "swapi",
             style: theme.textTheme.headline4!.copyWith(
               color: theme.primaryColor,
               fontWeight: FontWeight.w600,
@@ -35,17 +36,25 @@ class Navbar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Consumer<Auth>(builder: (ctx, auth, child) {
-                return TextButton(
-                  onPressed: () {},
-                  child: Text(
+              Consumer<Auth>(
+                builder: (ctx, auth, child) {
+                  return Text(
                     auth.user!.email!,
                     style: theme.textTheme.bodyText2!.copyWith(
                       color: theme.primaryColor,
                     ),
-                  ),
-                );
-              })
+                  );
+                },
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  authProvider.logout();
+                },
+                child: const Text('logout'),
+              )
             ],
           ),
         ],

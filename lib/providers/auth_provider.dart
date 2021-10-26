@@ -12,6 +12,7 @@ class Auth with ChangeNotifier {
     String email,
     String password,
   ) async {
+    // await Future.delayed(const Duration(seconds: 2));
     try {
       user = await AuthService.loginWithEmailAndPassword(email, password);
       loginStatus = LoginStatus.loggedIn;
@@ -19,17 +20,22 @@ class Auth with ChangeNotifier {
       loginError = 'Invalid Credentials!';
     }
     notifyListeners();
-    return;
   }
 
   Future<void> tryLogin() async {
-    await Future.delayed(const Duration(seconds: 2));
+    // await Future.delayed(const Duration(seconds: 2));
     final u = await AuthService.tryLogin();
     if (u != null && loginStatus == LoginStatus.loggedOut) {
       user = u;
       loginStatus = LoginStatus.loggedIn;
       notifyListeners();
     }
-    return;
+  }
+
+  Future<void> logout() async {
+    await AuthService.logout();
+    user = null;
+    loginStatus = LoginStatus.loggedOut;
+    notifyListeners();
   }
 }

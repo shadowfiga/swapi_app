@@ -7,7 +7,6 @@ const darkBackgroundColor = Color.fromRGBO(3, 33, 74, 1);
 final inputDecorationTheme = InputDecorationTheme(
   hintStyle: TextStyle(
     fontFamily: Font.montserrat.value,
-    fontSize: 14,
   ),
   enabledBorder: const OutlineInputBorder(
     borderSide: BorderSide(color: Colors.white, width: 1),
