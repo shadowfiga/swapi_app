@@ -36,6 +36,18 @@ class _AuthPageState extends State<AuthPage> {
                   color: primaryColor,
                 ),
               ),
+              Consumer<AuthNotifier>(builder: (ctx, auth, _) {
+                if (auth.loginError != null && auth.loginError!.isNotEmpty) {
+                  return Text(
+                    auth.loginError!,
+                    style: theme.textTheme.bodyText2!.copyWith(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
               const SizedBox(
                 height: 10,
               ),
@@ -47,6 +59,12 @@ class _AuthPageState extends State<AuthPage> {
                     border: OutlineInputBorder(),
                   ),
                   onChanged: (value) => user.email = value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please input an email';
+                    }
+                    return null;
+                  },
                 ),
                 width: 300,
               ),
@@ -62,6 +80,12 @@ class _AuthPageState extends State<AuthPage> {
                     border: OutlineInputBorder(),
                   ),
                   onChanged: (value) => user.password = value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please input a password';
+                    }
+                    return null;
+                  },
                 ),
                 width: 300,
               ),
