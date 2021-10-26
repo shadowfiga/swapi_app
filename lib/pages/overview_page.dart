@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:swapi_app/notifiers/overview_notifier.dart';
-import 'package:swapi_app/services/swapi_service.dart';
 import 'package:swapi_app/types/swapi_type.dart';
 import 'package:swapi_app/widgets/navbar.dart';
 
@@ -13,6 +12,9 @@ class OverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final overviewProvider =
+        Provider.of<OverviewNotifier>(context, listen: false);
+    overviewProvider.fetch(shouldNotify: true);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,7 +36,7 @@ class OverviewPage extends StatelessWidget {
                         OutlinedButton(
                           onPressed: () {
                             if (overview.type != SwapiType.people) {
-                              overview.setSwapiType(SwapiType.people);
+                              overview.setType(SwapiType.people);
                             }
                           },
                           child: Text(
@@ -52,7 +54,7 @@ class OverviewPage extends StatelessWidget {
                         OutlinedButton(
                           onPressed: () {
                             if (overview.type != SwapiType.planets) {
-                              overview.setSwapiType(SwapiType.planets);
+                              overview.setType(SwapiType.planets);
                             }
                           },
                           child: Text(
@@ -70,7 +72,7 @@ class OverviewPage extends StatelessWidget {
                         OutlinedButton(
                           onPressed: () {
                             if (overview.type != SwapiType.starships) {
-                              overview.setSwapiType(SwapiType.starships);
+                              overview.setType(SwapiType.starships);
                             }
                           },
                           child: Text(
@@ -87,34 +89,47 @@ class OverviewPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    FutureBuilder(
-                      builder: (ctx, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const SpinKitSpinningLines(
-                            color: Colors.yellow,
-                            size: 32,
+                    if (overview.loading)
+                      const SpinKitSpinningLines(
+                        color: Colors.yellow,
+                        size: 64,
+                      ),
+                    if (!overview.loading)
+                      ...overview.data.map((e) {
+                        if (overview.type == SwapiType.people) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(e.name),
+                              Text(e.gender),
+                              Text(e.birthYear)
+                            ],
                           );
-                        } else if (snapshot.hasError) {
-                          return Text(
-                            snapshot.error.toString(),
-                            style: theme.textTheme.bodyText2!.copyWith(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        } else if (overview.type == SwapiType.planets) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(e.name),
+                              Text(e.terrain),
+                              Text(e.climate)
+                            ],
                           );
                         } else {
-                          print(snapshot.data);
-                          return const Text("Fallthorugh");
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(e.name),
+                              Text(e.model),
+                              Text(e.manufacturer)
+                            ],
+                          );
                         }
-                      },
-                      future: SwapiService.fetchSwapiData(overview.type),
-                    ),
+                      })
                   ],
                 );
               },
             ),
-            width: 720,
+            width: 1080,
           ),
         ],
       ),
