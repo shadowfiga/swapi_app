@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:swapi_app/constants/font.dart';
 import 'package:swapi_app/constants/themes.dart';
 import 'package:swapi_app/models/user.dart';
+import 'package:swapi_app/providers/auth_provider.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<Auth>(context, listen: false);
     final theme = Theme.of(context);
     return Scaffold(
       body: Center(
@@ -58,7 +61,7 @@ class _AuthPageState extends State<AuthPage> {
                     isDense: true,
                     border: OutlineInputBorder(),
                   ),
-                  onChanged: (value) => user.email = value,
+                  onChanged: (value) => user.password = value,
                 ),
                 width: 300,
               ),
@@ -66,11 +69,17 @@ class _AuthPageState extends State<AuthPage> {
                 height: 10,
               ),
               OutlinedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Login",
-                    style: TextStyle(color: theme.primaryColor),
-                  ))
+                onPressed: () {
+                  authProvider.loginWithEmailAndPassword(
+                    user.email!,
+                    user.password!,
+                  );
+                },
+                child: Text(
+                  "Login",
+                  style: TextStyle(color: theme.primaryColor),
+                ),
+              ),
             ],
           ),
         ),

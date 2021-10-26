@@ -6,8 +6,10 @@ class OverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(),
+    return Scaffold(
+      body: Column(
+        children: [Text("Overview page")],
+      ),
     );
   }
 }
