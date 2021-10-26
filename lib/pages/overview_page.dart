@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import 'package:swapi_app/common/swapi_type.dart';
 import 'package:swapi_app/notifiers/overview_notifier.dart';
+import 'package:swapi_app/services/swapi_service.dart';
+import 'package:swapi_app/types/swapi_type.dart';
 import 'package:swapi_app/widgets/navbar.dart';
 
 class OverviewPage extends StatelessWidget {
@@ -10,7 +12,6 @@ class OverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final overviewNotifier = Provider.of<OverviewNotifier>(context);
     final theme = Theme.of(context);
     return Scaffold(
       body: Column(
@@ -23,12 +24,12 @@ class OverviewPage extends StatelessWidget {
             height: 20,
           ),
           SizedBox(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Consumer<OverviewNotifier>(
-                  builder: (ctx, overview, _) {
-                    return Row(
+            child: Consumer<OverviewNotifier>(
+              builder: (ctx, overview, _) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
                       children: [
                         OutlinedButton(
                           onPressed: () {
@@ -68,24 +69,50 @@ class OverviewPage extends StatelessWidget {
                         ),
                         OutlinedButton(
                           onPressed: () {
-                            if (overview.type != SwapiType.spaceships) {
-                              overview.setSwapiType(SwapiType.spaceships);
+                            if (overview.type != SwapiType.starships) {
+                              overview.setSwapiType(SwapiType.starships);
                             }
                           },
                           child: Text(
                             "spaceships",
                             style: TextStyle(
-                              color: overview.type == SwapiType.spaceships
+                              color: overview.type == SwapiType.starships
                                   ? Colors.green
                                   : theme.primaryColor,
                             ),
                           ),
                         ),
                       ],
-                    );
-                  },
-                ),
-              ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    FutureBuilder(
+                      builder: (ctx, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const SpinKitSpinningLines(
+                            color: Colors.yellow,
+                            size: 32,
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            snapshot.error.toString(),
+                            style: theme.textTheme.bodyText2!.copyWith(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        } else {
+                          print(snapshot.data);
+                          return const Text("Fallthorugh");
+                        }
+                      },
+                      future: SwapiService.fetchSwapiData(overview.type),
+                    ),
+                  ],
+                );
+              },
             ),
             width: 720,
           ),

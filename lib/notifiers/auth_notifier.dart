@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:swapi_app/common/login_status.dart';
 import 'package:swapi_app/models/user.dart';
 import 'package:swapi_app/services/auth_service.dart';
+import 'package:swapi_app/types/login_status.dart';
 
 class AuthNotifier with ChangeNotifier {
   User? user;

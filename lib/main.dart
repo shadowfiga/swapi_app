@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:swapi_app/common/login_status.dart';
 import 'package:swapi_app/notifiers/overview_notifier.dart';
 import 'package:swapi_app/pages/auth_page.dart';
 import 'package:swapi_app/pages/overview_page.dart';
 import 'package:swapi_app/pages/splash_page.dart';
+import 'package:swapi_app/types/login_status.dart';
 
 import 'constants/themes.dart';
 import 'notifiers/auth_notifier.dart';

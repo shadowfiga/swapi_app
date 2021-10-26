@@ -1,7 +1,7 @@
 enum SwapiType {
   people,
   planets,
-  spaceships,
+  starships,
 }
 
 extension SwapiTypeExtension on SwapiType {
@@ -11,8 +11,8 @@ extension SwapiTypeExtension on SwapiType {
         return 'people';
       case SwapiType.planets:
         return 'planets';
-      case SwapiType.spaceships:
-        return 'spaceships';
+      case SwapiType.starships:
+        return 'starships';
     }
   }
 }
