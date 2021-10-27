@@ -12,9 +12,6 @@ class OverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final overviewProvider =
-        Provider.of<OverviewNotifier>(context, listen: false);
-    overviewProvider.fetch(shouldNotify: true);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

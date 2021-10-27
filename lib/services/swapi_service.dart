@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 class SwapiService {
   static Future<List<dynamic>> fetchSwapiData(SwapiType type) async {
+    await Future.delayed(const Duration(seconds: 2));
     final url = Uri.parse('https://swapi.dev/api/${type.value}/');
     final response = await http.get(url);
     if (response.statusCode == 200) {

@@ -12,7 +12,7 @@ class AuthNotifier with ChangeNotifier {
     String email,
     String password,
   ) async {
-    // await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     try {
       user = await AuthService.loginWithEmailAndPassword(email, password);
       loginStatus = LoginStatus.loggedIn;
@@ -23,7 +23,7 @@ class AuthNotifier with ChangeNotifier {
   }
 
   Future<void> tryLogin() async {
-    // await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     final u = await AuthService.tryLogin();
     if (u != null && loginStatus == LoginStatus.loggedOut) {
       user = u;

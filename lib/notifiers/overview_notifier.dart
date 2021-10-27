@@ -3,23 +3,20 @@ import 'package:swapi_app/services/swapi_service.dart';
 import 'package:swapi_app/types/swapi_type.dart';
 
 class OverviewNotifier with ChangeNotifier {
-  SwapiType type = SwapiType.people;
+  SwapiType? type;
   List<dynamic> data = [];
   bool loading = false;
 
   Future<void> setType(SwapiType t) async {
     type = t;
-    loading = true;
-    notifyListeners();
-    await fetch(shouldNotify: false);
-    loading = false;
-    notifyListeners();
+    await fetch();
   }
 
-  Future<void> fetch({bool shouldNotify = true}) async {
-    data = await SwapiService.fetchSwapiData(type);
-    if (shouldNotify) {
-      notifyListeners();
-    }
+  Future<void> fetch() async {
+    loading = true;
+    notifyListeners();
+    data = await SwapiService.fetchSwapiData(type!);
+    loading = false;
+    notifyListeners();
   }
 }
